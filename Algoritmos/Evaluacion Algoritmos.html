@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reto PSeInt</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5fb;--card:#fff;--tx:#18203a;--mut:#5d6788;--bd:#dde3f3;--ok:#14a36b;--okb:#dcf7ea;--bad:#e0434b;--badb:#fde4e6;--pri:#2f6df6;--acc:#ffc233;--code:#eef1fb;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111729;--card:#1b2340;--tx:#eef1ff;--mut:#a3adcf;--bd:#2d3760;--okb:#0f3a2c;--badb:#44202a;--code:#252f55;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111729;--card:#1b2340;--tx:#eef1ff;--mut:#a3adcf;--bd:#2d3760;--okb:#0f3a2c;--badb:#44202a;--code:#252f55;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:500 17px/1.45 Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:22px;padding:20px;margin-bottom:14px}
+.c{text-align:center}.big{font-size:64px;line-height:1.1}
+h1{font-size:28px;margin:6px 0}h2{font-size:21px;line-height:1.3;margin:0 0 14px;font-weight:600}
+.mut{color:var(--mut)}.sm{font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}.chips span,.pill{display:inline-block;background:var(--code);border-radius:99px;padding:5px 12px;font-size:14px}
+input,textarea{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:2px solid var(--bd);border-radius:14px;padding:13px;margin:8px 0}
+input:focus,textarea:focus{outline:3px solid var(--pri);outline-offset:1px}
+input.err{border-color:var(--bad)}
+textarea{min-height:240px;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;resize:vertical}
+.btn{display:block;width:100%;font:600 18px Manrope,system-ui,sans-serif;color:#fff;background:var(--pri);border:0;border-radius:16px;padding:15px;margin-top:10px;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 4px 0 rgba(0,0,0,.22)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+.btn.ghost{background:var(--card);color:var(--tx);border:2px solid var(--bd);box-shadow:none}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.top{display:flex;justify-content:space-between;font-weight:600;padding:2px 6px 8px}
+.bar{height:12px;background:var(--bd);border-radius:9px;overflow:hidden;margin-bottom:14px}.bar i{display:block;height:100%;background:var(--acc);border-radius:9px}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:13px 15px;margin-top:10px;cursor:pointer}
+.opt:active:not(:disabled){transform:scale(.98)}
+.opt.ok{background:var(--okb);border-color:var(--ok);animation:pop .35s}
+.opt.bad{background:var(--badb);border-color:var(--bad);animation:shk .35s}
+.opt:disabled{cursor:default}
+code{background:var(--code);border-radius:6px;padding:1px 6px;font:.88em ui-monospace,Menlo,Consolas,monospace}
+.fb{margin:14px 0 0;padding:12px 14px;border-radius:14px}.fb.g{background:var(--okb)}.fb.b{background:var(--badb)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.grid div{background:var(--code);border-radius:16px;padding:12px}.grid b{display:block;font-size:26px}.grid span{font-size:14px;color:var(--mut)}
+.ck{list-style:none;padding:0;margin:12px 0 0}.ck li{padding:5px 0}
+pre{background:var(--code);border-radius:14px;padding:14px;overflow-x:auto;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:12px 0 0}
+details{text-align:left;margin-top:14px}summary{cursor:pointer;font-weight:600}.rv{padding:10px 0;border-top:1px solid var(--bd);font-size:15px}
+.cf{position:fixed;top:-2rem;font-size:1.5rem;pointer-events:none;animation:fall 1.4s ease-in forwards;z-index:9}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:.5}}
+@keyframes pop{50%{transform:scale(1.04)}}@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(prefers-reduced-motion:reduce){.cf{display:none}.opt.ok,.opt.bad{animation:none}}
+
+/* Interfaz renovada: cuaderno de desafíos */
+:root{--bg:#edf3f2;--card:#ffffff;--tx:#163334;--mut:#627778;--bd:#d5e3df;--pri:#087f8c;--acc:#e9ad48;--code:#edf5f3}
+body{font-size:16px;background:radial-gradient(ellipse at top left,rgba(8,127,140,.12),transparent 55%),var(--bg)}
+.wrap{max-width:720px;padding:36px 20px 48px}
+.card{border:1px solid var(--bd);border-radius:12px;padding:28px;margin-bottom:18px;box-shadow:0 10px 32px rgba(15,61,61,.06)}
+.card.c:first-child{border-top:5px solid var(--pri)}
+.big{font-size:48px;margin:8px 0 18px}
+h1{font-size:32px;letter-spacing:-1px;font-weight:800;margin:8px 0 14px}
+h2{font-size:21px;line-height:1.5;font-weight:800}
+.chips{gap:7px;margin:22px 0}
+.chips span,.pill{border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:12px;letter-spacing:.3px}
+input,textarea{border-width:1px;border-radius:8px;padding:14px}
+.btn{font:700 15px Manrope,system-ui,sans-serif;border-radius:8px;padding:15px 18px;box-shadow:none;transition:background .15s,transform .15s}
+.btn:hover{filter:brightness(.94)}
+.btn:active{transform:translateY(1px);box-shadow:none}
+.btn.ghost{border-width:1px;background:transparent}
+.top{font-size:13px;letter-spacing:.2px;padding:0 2px 12px;gap:12px;flex-wrap:wrap}
+.bar{height:6px;border-radius:3px;margin-bottom:24px}.bar i{border-radius:3px;background:var(--pri)}
+.opt{position:relative;border-width:1px;border-radius:8px;padding:16px 16px 16px 54px;margin-top:12px;line-height:1.5;transition:border-color .15s,background .15s}
+.opt:before{content:counter(option,upper-alpha);counter-increment:option;position:absolute;left:15px;top:15px;width:25px;height:25px;border:1px solid var(--bd);border-radius:5px;text-align:center;line-height:23px;font-size:12px;font-weight:800;color:var(--mut)}
+.card{counter-reset:option}
+.opt:hover:not(:disabled){border-color:var(--pri);background:var(--code)}
+.opt.ok:before{content:'✓';color:var(--ok);border-color:var(--ok)}
+.opt.bad:before{content:'×';color:var(--bad);border-color:var(--bad)}
+.fb{border-radius:8px;font-size:15px;line-height:1.6}
+pre{border:1px solid var(--bd);border-left:4px solid var(--pri);border-radius:8px;padding:18px;font-size:13px;line-height:1.7;margin:18px 0 22px}
+.grid{gap:12px;margin:24px 0}.grid div{border-radius:8px;border:1px solid var(--bd);background:var(--bg);padding:18px}.grid b{font-size:30px;font-weight:800}.grid span{font-size:12px}
+.rv{padding:16px 0;line-height:1.6}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#122424;--card:#1b3031;--tx:#e8f3ef;--mut:#a4bfba;--bd:#35514e;--code:#233c3a;--okb:#153e30;--badb:#492a30}}
+:root[data-theme="dark"]{--bg:#122424;--card:#1b3031;--tx:#e8f3ef;--mut:#a4bfba;--bd:#35514e;--code:#233c3a;--okb:#153e30;--badb:#492a30}
+@media(max-width:480px){.wrap{padding:20px 14px 32px}.card{padding:20px}h1{font-size:27px}h2{font-size:19px}.opt{padding-right:12px}pre{padding:12px;font-size:12px}.grid div{padding:14px}}
+@media(prefers-reduced-motion:reduce){.btn,.opt{transition:none}}
+</style></head><body><main class="wrap" id="app"></main>
+<script>
+// Formato: [pregunta, [correcta, incorrecta, ...], explicación opcional]
+const CFG={t:"Reto PSeInt",e:"🧠",s:"Evaluación de lógica de programación con PSeInt y Scratch. Analiza y corrige algoritmos. ¡Demuestra lo que sabes!",ch:["PSeInt","Lógica","Algoritmos","Scratch","Reto práctico"],c:"#087f8c",d:"#e9ad48",
+p:{q:"Escribe en PSeInt un algoritmo que pida el nombre de un estudiante y tres notas, calcule el promedio y muestre «aprobó» si el promedio es mayor o igual a 3, o «reprobó» en caso contrario.",
+k:[["Empieza con Algoritmo y termina con FinAlgoritmo","algoritmo\\s+\\w+[\\s\\S]*fin\\s*algoritmo|proceso\\s+\\w+[\\s\\S]*fin\\s*proceso"],["Declara variables con Definir","definir\\s+\\w"],["Pide los datos con Leer","leer\\s+\\w"],["Muestra mensajes con Escribir","escribir\\s"],["Suma las tres notas","\\+",2],["Divide entre 3 para sacar el promedio","\\/\\s*3"],["Usa Si … Entonces … FinSi","\\bsi\\b[\\s\\S]*entonces[\\s\\S]*finsi"],["Compara el promedio con 3","(>=\\s*3)|(3\\s*<=)|(>\\s*2)|(<\\s*3)"],["Muestra «aprobó» y «reprobó»","aprob[oó][\\s\\S]*reprob[oó]|reprob[oó][\\s\\S]*aprob[oó]"]],
+s:`Algoritmo promedio_notas
+    Definir nombre Como Caracter
+    Definir n1, n2, n3, prom Como Real
+    Escribir "Nombre del estudiante:"
+    Leer nombre
+    Escribir "Ingresa las 3 notas:"
+    Leer n1, n2, n3
+    prom <- (n1 + n2 + n3) / 3
+    Si prom >= 3 Entonces
+        Escribir nombre, " aprobó con ", prom
+    Sino
+        Escribir nombre, " reprobó con ", prom
+    FinSi
+FinAlgoritmo`}};
+const QS=[
+["¿Qué es PSeInt?",["Una herramienta para escribir y ejecutar pseudocódigo","Un navegador web","Un lenguaje para diseñar páginas","Un editor de fotos"],"PSeInt sirve para aprender lógica de programación."],
+["¿Con qué palabra empieza un algoritmo en PSeInt?",["Algoritmo","Inicio:","Begin","Main"],"También puedes usar `Proceso`."],
+["¿Qué instrucción muestra un mensaje en pantalla?",["Escribir","Leer","Mostrar","Imprimir"]],
+["¿Qué instrucción pide un dato al usuario?",["Leer","Escribir","Pedir","Entrada"]],
+["¿Cuál es el operador de asignación recomendado en PSeInt?",["<-","==","=>","::"],"Ejemplo: `edad <- 15`."],
+["¿Con qué palabra termina un algoritmo?",["FinAlgoritmo","Fin.","End","Stop"]],
+["¿Qué tipo de dato usarías para guardar `3.75`?",["Real","Caracter","Logico","Entero"]],
+["¿Qué tipo de dato guarda texto como «Hola»?",["Caracter","Real","Logico","Entero"]],
+["¿Qué valores puede guardar una variable de tipo Logico?",["Verdadero o Falso","Solo números","Solo letras","Cualquier cosa"]],
+["¿Cuál es el resultado de `7 MOD 3`?",["1","2","3","0"],"MOD devuelve el residuo: 7 ÷ 3 = 2 y sobra 1."],
+["¿Cuál es el resultado de `2 ^ 3`?",["8","6","5","9"],"El símbolo ^ es potencia: 2 × 2 × 2."],
+["¿Cuál es el resultado de `10 / 4`?",["2.5","2","3","4"]],
+["¿Qué estructura toma una decisión con dos caminos?",["Si … Entonces … Sino … FinSi","Para … FinPara","Mientras … FinMientras","Dimension"]],
+["¿Qué ciclo usas cuando sabes cuántas veces repetir?",["Para","Mientras","Segun","Definir"]],
+["¿Qué ciclo revisa la condición ANTES de ejecutar las instrucciones?",["Mientras","Repetir … Hasta Que","Segun","Dimension"]],
+["¿Cuántas veces como mínimo se ejecuta un ciclo `Repetir … Hasta Que`?",["Una vez","Cero veces","Dos veces","Infinitas"],"La condición se evalúa al final."],
+["¿Cuántas veces se repite `Para i <- 1 Hasta 5 Hacer`?",["5","4","6","1"]],
+["¿Qué operador es verdadero solo si AMBAS condiciones son verdaderas?",["Y","O","NO","MOD"]],
+["¿Qué operador lógico invierte una condición?",["NO","Y","O","MOD"]],
+["¿Cómo se escribe «diferente de» en PSeInt?",["<>","=>","=:=","<<"]],
+["¿Para qué sirve `Definir`?",["Declarar variables y su tipo","Mostrar datos","Repetir instrucciones","Terminar el programa"]],
+["¿Qué instrucción se usa para crear un arreglo?",["Dimension","Definir","Arreglo","Lista"]],
+["¿Cómo se escribe un comentario en PSeInt?",["// comentario","# comentario","<!-- comentario -->","-- comentario"]],
+["¿Qué hace la estructura `Segun`?",["Elige entre varias opciones según el valor de una variable","Repite instrucciones","Lee un dato","Declara un arreglo"]],
+["¿Qué función devuelve el valor absoluto de un número?",["ABS","MOD","TRUNC","LONGITUD"]],
+["¿Qué función devuelve la cantidad de letras de un texto?",["Longitud","Largo","Count","Tamaño"]],
+["¿Qué es un algoritmo?",["Una secuencia ordenada de pasos para resolver un problema","Un tipo de computador","Un error del programa","Una imagen en la web"]],
+["¿Cuáles son las tres partes básicas de un algoritmo?",["Entrada, proceso y salida","Inicio, medio y fin","Texto, imagen y video","Rojo, verde y azul"]],
+["¿Qué es una variable?",["Un espacio de memoria con nombre que guarda un dato que puede cambiar","Un número que nunca cambia","Un tipo de ciclo","Un comentario"]],
+["Si `x <- 5` y luego `x <- x + 2`, ¿cuánto vale `x`?",["7","5","2","52"]],
+["Si `a <- 3` y `b <- 4`, ¿cuánto vale `a * b + 1`?",["13","12","14","19"],"Primero se multiplica (12) y luego se suma 1."],
+["Una variable que va sumando valores distintos (`s <- s + n`) se llama:",["Acumulador","Contador","Constante","Bandera"]],
+["Una variable que aumenta de uno en uno (`c <- c + 1`) se llama:",["Contador","Acumulador","Constante","Función"]],
+["¿Qué significa depurar un programa?",["Buscar y corregir errores","Borrar todo el código","Cambiar de lenguaje","Imprimir el programa"]],
+["Escribir mal una palabra reservada (por ejemplo `Escribr`) produce un error de:",["Sintaxis","Lógica","Hardware","Red"]],
+["En un diagrama de flujo, el rombo representa:",["Una decisión","El inicio","Una entrada de datos","Una salida de datos"]],
+["La condición `edad >= 18` produce un valor:",["Lógico (verdadero o falso)","De texto","Decimal","Ninguno"]],
+["¿Cuál es el orden correcto para resolver un problema con código?",["Analizar, diseñar el algoritmo, codificar y probar","Probar, codificar y analizar","Codificar sin pensar","Solo probar"]],
+["El algoritmo debe calcular el promedio de tres notas. ¿Qué línea debes corregir?", ["Cambiar por prom <- (n1 + n2 + n3) / 3", "Cambiar por prom <- n1 + n2 + n3 / 2", "Cambiar por prom <- (n1 + n2 + n3) * 3", "Está bien: no necesita cambios"], "La división se realiza antes que la suma. Los paréntesis permiten dividir la suma de las tres notas entre 3.", "Algoritmo calcular_promedio\n    Definir n1, n2, n3, prom Como Real\n    Leer n1, n2, n3\n    prom <- n1 + n2 + n3 / 3\n    Escribir prom\nFinAlgoritmo"],
+["Este algoritmo debe mostrar los números del 1 al 5 y terminar. ¿Está bien o mal?", ["Está mal: falta i <- i + 1 dentro del ciclo", "Está bien: muestra del 1 al 5 y termina", "Está mal: debe empezar con i <- 6", "Está mal: debe cambiar la condición por i > 5"], "Sin actualizar i, su valor siempre es 1 y la condición sigue siendo verdadera. El incremento debe ir dentro del ciclo, después de Escribir.", "Algoritmo contar\n    Definir i Como Entero\n    i <- 1\n    Mientras i <= 5 Hacer\n        Escribir i\n    FinMientras\nFinAlgoritmo"],
+["Se aprueba con promedio mayor o igual a 3. ¿Este algoritmo clasifica correctamente todos los promedios?", ["No: debe usar prom >= 3 para incluir el 3", "Sí: prom > 3 también incluye el 3", "No: debe usar prom < 3 para aprobar", "Sí: solo importa que tenga Sino"], "Con prom = 3, la condición prom > 3 es falsa y muestra Reprobó. Usar >= incluye el valor límite.", "Algoritmo evaluar_promedio\n    Definir prom Como Real\n    Leer prom\n    Si prom > 3 Entonces\n        Escribir \"Aprobó\"\n    Sino\n        Escribir \"Reprobó\"\n    FinSi\nFinAlgoritmo"],
+["Este algoritmo debe sumar los números del 1 al 5. ¿Está bien o mal y qué muestra?", ["Está bien: muestra 15", "Está bien: muestra 5", "Está mal: suma debe empezar en 1", "Está mal: suma <- 0 debe ir dentro del ciclo"], "El acumulador comienza en 0 y suma 1 + 2 + 3 + 4 + 5 = 15. Reiniciarlo dentro del ciclo perdería lo acumulado.", "Algoritmo sumar\n    Definir i, suma Como Entero\n    suma <- 0\n    Para i <- 1 Hasta 5 Hacer\n        suma <- suma + i\n    FinPara\n    Escribir suma\nFinAlgoritmo"],
+["El algoritmo debe intercambiar a y b. ¿Qué corrección permite que al final a valga 8 y b valga 3?", ["Declarar aux Como Entero y usar aux <- a; a <- b; b <- aux", "Usar a <- b; b <- a sin cambios", "Usar b <- a; a <- b", "Usar a <- a; b <- b"], "La primera asignación sobrescribe el 3. Una variable auxiliar conserva el valor original de a para asignarlo después a b. Ejecuta cada asignación en una línea.", "Algoritmo intercambiar\n    Definir a, b Como Entero\n    a <- 3\n    b <- 8\n    a <- b\n    b <- a\n    Escribir a, \" \", b\nFinAlgoritmo"],
+["Este algoritmo debe pedir un número hasta recibir uno entre 1 y 10, incluidos ambos extremos. ¿Está bien o mal?", ["Está bien: termina solo cuando n está entre 1 y 10", "Está mal: debe usar O en lugar de Y", "Está mal: debe usar n > 1 Y n < 10", "Está mal: Repetir no permite leer datos"], "Repetir termina cuando su condición es verdadera. Y exige cumplir ambos límites; con O, cualquier número cumpliría al menos una de las comparaciones.", "Algoritmo validar_numero\n    Definir n Como Entero\n    Repetir\n        Escribir \"Ingresa un entero entre 1 y 10:\"\n        Leer n\n    Hasta Que n >= 1 Y n <= 10\n    Escribir \"Número válido\"\nFinAlgoritmo"],
+["¿Qué es Scratch?",["Un lenguaje de programación visual por bloques","Un editor de texto","Un sistema operativo","Un navegador"],"Fue creado por el MIT Media Lab."],
+["¿Cómo se llama el personaje que programas en Scratch?",["Objeto (sprite)","Escenario","Disfraz","Variable"]],
+["¿De qué color son los bloques de Eventos, como «al hacer clic en la bandera verde»?",["Amarillo","Azul","Verde","Morado"]],
+["¿En qué categoría está el bloque «por siempre»?",["Control","Movimiento","Apariencia","Sonido"]],
+["¿Qué bloque de Scratch se parece al `Si … Entonces … Sino` de PSeInt?",["si … entonces … si no","por siempre","mover 10 pasos","decir Hola"]],
+["¿Qué usarías en Scratch para guardar la puntuación de un juego?",["Una variable","Un disfraz","Un sonido","Un fondo"]]
+];
+
+const $=s=>document.querySelector(s),A=$('#app');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/`([^`]+)`/g,'<code>$1</code>');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const pickr=a=>a[Math.random()*a.length|0];
+const OK=['¡Correcto! 🎉','¡Eso es! 💪','¡Crack! 😎','¡Perfecto! ✨','¡Bien hecho! 👏'],KO=['Ups… 😅','Casi 🤏','Aprende y sigue 💡','No pasa nada 🙌'];
+document.documentElement.style.setProperty('--pri',CFG.c);document.documentElement.style.setProperty('--acc',CFG.d);
+let S;
+function boom(){for(let i=0;i<14;i++){const s=document.createElement('span');s.className='cf';s.textContent=['🎉','✨','⭐','🎊'][i%4];s.style.left=Math.random()*95+'vw';s.style.animationDelay=Math.random()*.3+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),1800)}}
+function home(){
+A.innerHTML=`<div class="card c"><div class="big">${CFG.e}</div><h1>${CFG.t}</h1><p class="mut">${CFG.s}</p><div class="chips">${CFG.ch.map(x=>`<span>${x}</span>`).join('')}</div><input id="nm" placeholder="Escribe tu nombre" maxlength="40" autocomplete="name" aria-label="Tu nombre"><button class="btn" id="go">Comenzar desafío →</button><p class="mut sm">${QS.length} preguntas${CFG.p?' y un reto práctico':''}. Se mezclan cada vez que juegas.</p></div>`;
+$('#go').onclick=()=>{const n=$('#nm').value.trim();if(!n){$('#nm').classList.add('err');$('#nm').focus();return}start(n)}}
+function start(n){S={n,i:0,sc:0,ok:0,st:0,best:0,wrong:[],pr:null,qs:shuffle(QS).map(q=>{const o=shuffle(q[1].map((t,i)=>[t,i]));return{q:q[0],o:o.map(x=>x[0]),a:o.findIndex(x=>x[1]===0),x:q[2]||'',code:q[3]||''}})};ask()}
+function ask(){const q=S.qs[S.i];window.scrollTo(0,0);
+A.innerHTML=`<div class="top"><span>Pregunta ${S.i+1}/${S.qs.length}</span><span id="st">🔥 ${S.st}</span><span id="sc">⭐ ${S.sc}</span></div><div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div><div class="card"><h2>${esc(q.q)}</h2>${q.code?'<pre>'+esc(q.code)+'</pre>':''}${q.o.map((t,i)=>`<button class="opt" data-i="${i}">${esc(t)}</button>`).join('')}<div id="fb"></div></div>`;
+document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.i))}
+function pick(i){const q=S.qs[S.i],g=i===q.a,last=S.i+1>=S.qs.length;
+document.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('ok');else if(k===i)b.classList.add('bad')});
+if(g){S.ok++;S.st++;S.best=Math.max(S.best,S.st);S.sc+=10+2*Math.min(S.st-1,5);boom()}else{S.st=0;S.wrong.push(q);try{navigator.vibrate(120)}catch(e){}}
+$('#st').textContent='🔥 '+S.st;$('#sc').textContent='⭐ '+S.sc;
+$('#fb').innerHTML=`<p class="fb ${g?'g':'b'}">${pickr(g?OK:KO)}${q.x?' '+esc(q.x):''}</p><button class="btn" id="nx">${last?(CFG.p?'Ir al reto práctico ✍️':'Ver mi resultado 🏁'):'Siguiente'}</button>`;
+$('#nx').onclick=()=>{if(last)CFG.p?prac():fin();else{S.i++;ask()}};
+$('#nx').scrollIntoView({block:'nearest',behavior:'smooth'})}
+function prac(){const P=CFG.p;window.scrollTo(0,0);
+A.innerHTML=`<div class="card"><h2>✍️ Reto práctico</h2><p>${esc(P.q)}</p><textarea id="cd" spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="Tu algoritmo en PSeInt" placeholder="Algoritmo mi_programa&#10;    ...&#10;FinAlgoritmo"></textarea><ul class="ck" id="ck"></ul><div id="so"></div><button class="btn" id="rv">Revisar mi algoritmo ✅</button><button class="btn ghost" id="sl">Ver una solución posible 💡</button><button class="btn ghost" id="fn">Terminar y ver mi resultado 🏁</button></div>`;
+$('#rv').onclick=()=>{const t=$('#cd').value;let n=0;$('#ck').innerHTML=P.k.map(([l,r,m])=>{const ok=(t.match(new RegExp(r,'gi'))||[]).length>=(m||1);n+=ok?1:0;return`<li>${ok?'✅':'❌'} ${esc(l)}</li>`}).join('');S.pr={ok:n,n:P.k.length};if(n===P.k.length)boom()};
+$('#sl').onclick=()=>{$('#so').innerHTML='<pre>'+esc(P.s)+'</pre>'};
+$('#fn').onclick=()=>{S.pr=S.pr||{ok:0,n:P.k.length};fin()}}
+function fin(){window.scrollTo(0,0);const t=S.qs.length,p=S.ok/t,nota=(p*5).toFixed(1),m=p>=.9?'🏆':p>=.7?'🥇':p>=.5?'🥈':'💪',
+msg=p>=.9?'¡Nivel experto!':p>=.7?'¡Muy buen resultado!':p>=.5?'Vas por buen camino, repasa los errores.':'Sigue practicando, ¡tú puedes!',
+tx=`${CFG.e} ${CFG.t}\n👤 ${S.n}\n✅ Aciertos: ${S.ok}/${t} (nota ${nota}/5.0)\n🔥 Mejor racha: ${S.best}\n⭐ Puntos: ${S.sc}`+(S.pr?`\n✍️ Reto práctico: ${S.pr.ok}/${S.pr.n} criterios`:'');
+A.innerHTML=`<div class="card c"><div class="big">${m}</div><h1>${esc(S.n)}</h1><p class="mut">${msg}</p><div class="grid"><div><b>${S.ok}/${t}</b><span>Aciertos</span></div><div><b>${nota}</b><span>Nota sobre 5.0</span></div><div><b>${S.best} 🔥</b><span>Mejor racha</span></div><div><b>${S.sc}</b><span>Puntos</span></div></div>${S.pr?`<span class="pill">✍️ Reto práctico: ${S.pr.ok}/${S.pr.n} criterios</span>`:''}<button class="btn" id="sh">Compartir resultado ↗</button><button class="btn ghost" id="rp">Volver a intentarlo ↻</button>${S.wrong.length?`<details><summary>Repasar mis errores (${S.wrong.length})</summary>${S.wrong.map(q=>`<div class="rv"><b>${esc(q.q)}</b>${q.code?'<pre>'+esc(q.code)+'</pre>':''}<br>✅ ${esc(q.o[q.a])}${q.x?'<br><i>'+esc(q.x)+'</i>':''}</div>`).join('')}</details>`:''}</div>`;
+if(p>=.7)boom();
+$('#sh').onclick=()=>{if(navigator.share)navigator.share({text:tx}).catch(()=>{});else window.open('https://wa.me/?text='+encodeURIComponent(tx),'_blank')};
+$('#rp').onclick=home}
+home();
+</script></body></html>
